@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo \"no build step for backend\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18.18.0 <23"
+  },
   "dependencies": {
     "axios": "^1.13.2",
     "cors": "^2.8.5",

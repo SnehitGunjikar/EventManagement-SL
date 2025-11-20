@@ -27,7 +27,7 @@ exports.createProfile = async (req, res) => {
 
 exports.getAllProfiles = async (req, res) => {
   try {
-    const profiles = await Profile.find().select('id name timezone');
+    const profiles = await Profile.find().select('_id name timezone');
     res.status(200).json(profiles);
   } catch (error) {
     console.error('Error fetching profiles:', error);
