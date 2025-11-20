@@ -1,5 +1,11 @@
 
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+// Initialize plugins
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 // 1. Functions for Display (UTC -> User Timezone) 
 

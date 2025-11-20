@@ -1,8 +1,7 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config({ path: __dirname + '/.env' }); // Load environment variables from backend directory
+require('dotenv').config({ path: __dirname + '/.env' });
 
 const profRoutes = require('./routes/profRoutes');
 const eventRoutes = require('./routes/eventRoutes');
@@ -11,8 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors()); // Enable CORS for all origins
-app.use(express.json()); // To parse JSON request bodies
+app.use(cors());
+app.use(express.json());
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -20,12 +19,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- 1. Database Connection ---
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'running', 
+    database: 'MongoDB Atlas',
+    timestamp: new Date().toISOString()
+  });
+});
 
-// --- 2. API Routes ---
+// Routes
 app.use('/api/profiles', profRoutes);
 app.use('/api/events', eventRoutes);
 
@@ -35,7 +38,26 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal server error', error: err.message });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+    
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📝 Ready to accept your data input!`);
+      console.log(`🧪 Test endpoints:`);
+      console.log(`   GET  http://localhost:${PORT}/api/health`);
+      console.log(`   GET  http://localhost:${PORT}/api/profiles`);
+      console.log(`   POST http://localhost:${PORT}/api/profiles`);
+      console.log(`   GET  http://localhost:${PORT}/api/events/:profileId`);
+      console.log(`   POST http://localhost:${PORT}/api/events`);
+      console.log(`   PUT  http://localhost:${PORT}/api/events/:id`);
+    });
+  })
+  .catch(err => {
+    console.error('❌ MongoDB Atlas connection error:', err);
+    console.log('💡 Make sure your MONGO_URI is correct in the .env file');
+    process.exit(1);
+  });
