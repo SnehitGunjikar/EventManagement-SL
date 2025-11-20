@@ -43,7 +43,7 @@ npm install
 ### Environment Variables
 Create `frontend/.env.local`:
 ```env
-VITE_API_URL=https://your-backend-url.vercel.app
+VITE_API_URL=https://backend-url.vercel.app
 ```
 During local development, point to the local backend:
 ```env
@@ -145,34 +145,7 @@ node server.js
       - 404: `{ message: 'Event not found.' }`
       - 400: validation errors as above
 
-### Authentication/Authorization
-- Not implemented in this project.
-- All endpoints are public for demo and academic use.
 
-### Testing
-- Manual testing with curl or Postman is recommended:
-```bash
-# Health
-curl http://localhost:5000/api/health
-
-# Create profile
-curl -X POST http://localhost:5000/api/profiles \
-  -H "Content-Type: application/json" \
-  -d '{ "name": "Alice" }'
-
-# List profiles
-curl http://localhost:5000/api/profiles
-
-# Create event (replace profileId)
-curl -X POST http://localhost:5000/api/events \
-  -H "Content-Type: application/json" \
-  -d '{
-    "profiles": ["<profileId>"],
-    "eventTimezone": "America/New_York",
-    "startDateTime": "2024-12-15T14:00:00.000Z",
-    "endDateTime": "2024-12-15T16:00:00.000Z"
-  }'
-```
 
 ### Deployment (Backend)
 - Deployed via Vercel serverless using `@vercel/node`.
@@ -243,5 +216,3 @@ cd ../frontend && npm run dev
 
 ---
 
-## Badges
-Badges are optional and not configured. Consider adding CI badges (build, lint, test) once CI is set up.
